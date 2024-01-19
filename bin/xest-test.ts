@@ -1,11 +1,12 @@
 #!/usr/bin/env node
+import * as dotenv from 'dotenv';
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import { ElbtestStack } from '../lib/elbtest-stack';
 import { RdsStack } from '../lib/rds_infrastructure';
 import { VpcStack } from '../lib/vpc-stack';
 
-
+dotenv.config()
 const app = new cdk.App();
 
 const env = {

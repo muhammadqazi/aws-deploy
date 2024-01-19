@@ -20,8 +20,9 @@ export class RdsStack extends cdk.Stack {
 
         const databaseUsername = process.env.DB_USERNAME;
 
+        const applicationName = 'snono-dds';
         this.databaseCredentialsSecret = new secretsmanager.Secret(this, 'DBCredentialsSecret', {
-            secretName: 'mysecret-db-credentials',
+            secretName: `${applicationName}-db-credentials`,
             generateSecretString: {
                 secretStringTemplate: JSON.stringify({
                     username: databaseUsername
@@ -33,11 +34,12 @@ export class RdsStack extends cdk.Stack {
         });
 
         new ssm.StringParameter(this, 'DBCredentialsArn', {
-            parameterName: 'mysecret-db-credentials-arn',
+            parameterName: `${applicationName}-db-credentials-arn`,
             stringValue: this.databaseCredentialsSecret.secretArn,
         });
 
         this.myRdsInstance = new rds.DatabaseInstance(this, 'MyDatabaseInstance', {
+            publiclyAccessible: true,
             engine: rds.DatabaseInstanceEngine.mysql({
                 version: rds.MysqlEngineVersion.VER_5_7,
             }),
@@ -45,7 +47,7 @@ export class RdsStack extends cdk.Stack {
             vpc: props?.myVpc as IVpc,
             securityGroups: [props?.rdsSecurityGroup as ISecurityGroup],
             allocatedStorage: 20,
-            databaseName: 'test',
+            databaseName: 'snono_dds_db',
             storageEncrypted: true,
         });
     }

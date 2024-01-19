@@ -21,11 +21,11 @@ export class ElbtestStack extends cdk.Stack {
 
     // Construct an S3 asset Zip from directory up.
     const webAppZipArchive = new s3assets.Asset(this, 'WebAppZip', {
-      path: `${__dirname}/../src`,
+      path: `${__dirname}/../../../Snono/snono-dds-api`,
     });
 
     // Create a ElasticBeanStalk app.
-    const appName = 'MyWebApp';
+    const appName = 'snono-dds';
     const app = new elasticbeanstalk.CfnApplication(this, 'Application', {
       applicationName: appName,
     });
@@ -60,7 +60,7 @@ export class ElbtestStack extends cdk.Stack {
     });
 
     const envVars = [
-      ['aws:elasticbeanstalk:application:environment', 'DB_URL', `${props?.myRds.dbInstanceEndpointAddress}:${props?.myRds.dbInstanceEndpointPort}`],
+      ['aws:elasticbeanstalk:application:environment', 'DB_URL', `${props?.myRds.dbInstanceEndpointAddress}:${props?.myRds.dbInstanceEndpointPort}`]
     ]
 
     // Example of some options which can be configured
@@ -95,7 +95,7 @@ export class ElbtestStack extends cdk.Stack {
 
     // Create an Elastic Beanstalk environment to run the application
     const elbEnv = new elasticbeanstalk.CfnEnvironment(this, 'Environment', {
-      environmentName: props?.envName ?? "MyWebAppEnvironment",
+      environmentName: props?.envName ?? `${appName}-env`,
       applicationName: app.applicationName || appName,
       solutionStackName: '64bit Amazon Linux 2023 v6.0.4 running Node.js 18',
       optionSettings: optionSettingProperties,

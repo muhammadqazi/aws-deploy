@@ -12,8 +12,8 @@ export class VpcStack extends cdk.Stack {
 
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
-      
-        this.myVpc = new ec2.Vpc(this, 'MyVPC', {
+        const applicationName = 'snono-dds';
+        this.myVpc = new ec2.Vpc(this, `${applicationName}-vpc`, {
             cidr: process.env.VPC_CIDR,
             maxAzs: 4,
             natGateways: 1,
