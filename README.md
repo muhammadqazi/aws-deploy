@@ -1,4 +1,4 @@
-## Deploy Your Web Application with AWS Elastic Beanstalk, AWS CDK Pipelines, and CloudFront
+## Deploy Your Web Application to staging and production with Elastic Beanstalk, AWS CDK , CloudFront, and Circleci pipelines
 https://medium.com/@muhammedqazi/deploy-your-web-application-with-aws-elastic-beanstalk-aws-cdk-pipelines-and-cloudfront-c9a42bc98c10
 
 ![Figure-1 -Unified-API-architecture-1024x582](https://github.com/muhammadqazi/aws-deploy/assets/86423826/0a41cca8-fcca-49a9-ac8b-d627554beabf)
