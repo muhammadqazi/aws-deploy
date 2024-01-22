@@ -20,7 +20,7 @@ export class RdsStack extends cdk.Stack {
 
         const databaseUsername = process.env.DB_USERNAME;
 
-        const applicationName = 'snono-dds';
+        const applicationName = 'aws-deploy';
         this.databaseCredentialsSecret = new secretsmanager.Secret(this, 'DBCredentialsSecret', {
             secretName: `${applicationName}-db-credentials`,
             generateSecretString: {
@@ -47,7 +47,7 @@ export class RdsStack extends cdk.Stack {
             vpc: props?.myVpc as IVpc,
             securityGroups: [props?.rdsSecurityGroup as ISecurityGroup],
             allocatedStorage: 20,
-            databaseName: 'snono_dds_db',
+            databaseName: 'aws-deploy_dds_db',
             storageEncrypted: true,
         });
     }

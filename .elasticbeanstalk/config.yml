@@ -1,0 +1,10 @@
+branch-defaults:
+  production:
+    environment: my-app-production
+  staging:
+    environment: my-app-staging
+global:
+  application_name: my-app
+  default_platform: 64bit Amazon Linux 2 v5.8.3 running Node.js 18
+  default_region: YOUR_AWS_REGION
+  sc: git

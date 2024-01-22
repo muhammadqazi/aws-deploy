@@ -1,8 +1,8 @@
 {
-  "name": "xest-test",
+  "name": "aws-deploy",
   "version": "0.1.0",
   "bin": {
-    "xest-test": "bin/xest-test.js"
+    "aws-deploy": "bin/aws-deploy.js"
   },
   "scripts": {
     "build": "tsc",

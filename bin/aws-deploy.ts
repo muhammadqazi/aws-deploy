@@ -16,7 +16,7 @@ const env = {
 
 const vpcStack = new VpcStack(app, 'VpcStack', { env: env });
 const rdsStack = new RdsStack(app, 'RdsStack', { env: env , myVpc: vpcStack.myVpc, rdsSecurityGroup: vpcStack.rdsSecurityGroup });
-const ebStack =  new ElbtestStack(app, 'ElbtestStack', {  env: env, myRds: rdsStack.myRdsInstance });
+const ebStack =  new ElbtestStack(app, 'ElbtestStack', {  env: env });
 
 rdsStack.addDependency(vpcStack);
 ebStack.addDependency(rdsStack);

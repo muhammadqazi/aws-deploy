@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core'
 import * as s3assets from '@aws-cdk/aws-s3-assets'
 import * as elasticbeanstalk from '@aws-cdk/aws-elasticbeanstalk'
 import * as iam from '@aws-cdk/aws-iam'
-import { DatabaseInstance } from '@aws-cdk/aws-rds'
+
 
 export interface EBEnvProps extends cdk.StackProps {
   // Autoscaling group configuration
@@ -10,7 +10,7 @@ export interface EBEnvProps extends cdk.StackProps {
   maxSize?: string;
   instanceTypes?: string;
   envName?: string;
-  myRds: DatabaseInstance;
+
 }
 
 export class ElbtestStack extends cdk.Stack {
@@ -21,11 +21,11 @@ export class ElbtestStack extends cdk.Stack {
 
     // Construct an S3 asset Zip from directory up.
     const webAppZipArchive = new s3assets.Asset(this, 'WebAppZip', {
-      path: `${__dirname}/../../../Snono/snono-dds-api`,
+      path: `${__dirname}/../YOUR_APP_DIRECTORY`,
     });
 
     // Create a ElasticBeanStalk app.
-    const appName = 'snono-dds';
+    const appName = 'aws-deploy';
     const app = new elasticbeanstalk.CfnApplication(this, 'Application', {
       applicationName: appName,
     });
@@ -59,10 +59,6 @@ export class ElbtestStack extends cdk.Stack {
       ]
     });
 
-    const envVars = [
-      ['aws:elasticbeanstalk:application:environment', 'DB_URL', `${props?.myRds.dbInstanceEndpointAddress}:${props?.myRds.dbInstanceEndpointPort}`]
-    ]
-
     // Example of some options which can be configured
     const optionSettingProperties: elasticbeanstalk.CfnEnvironment.OptionSettingProperty[] = [
       {
@@ -85,11 +81,6 @@ export class ElbtestStack extends cdk.Stack {
         optionName: 'InstanceTypes',
         value: props?.instanceTypes ?? 't2.micro',
       },
-      ...envVars.map(([namespace, optionName, value]) => ({
-        namespace,
-        optionName,
-        value,
-      })),
     ];
 
 
