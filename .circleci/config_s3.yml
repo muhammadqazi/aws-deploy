@@ -1,0 +1,48 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/node:21.6.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Build
+          command: |
+              npm run build
+      - run:
+          name: Export
+          no_output_timeout: 10m
+          command: npm run export
+      - run:
+          name: Deploy
+          command: |
+            if [ $CIRCLE_BRANCH = 'staging' ]; then
+              aws s3 sync build s3://my-app-staging
+              aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/*"
+            fi
+            if [ $CIRCLE_BRANCH = 'production' ]; then
+              aws s3 sync build s3://my-app-production
+              aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/*"
+            fi
+workflows:
+  version: 2
+  build:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - staging
+                - production
